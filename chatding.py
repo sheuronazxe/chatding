@@ -1,11 +1,9 @@
-from winsound import MessageBeep
-from config import DELAY, TOKEN, NAME, CHANNEL
+from config import DELAY, CHANNEL
 import socket, winsound, time, ctypes, os
 
 sock = socket.socket()
 sock.connect(('irc.chat.twitch.tv',6667))
-sock.send(f"PASS {TOKEN}\n".encode('utf-8'))
-sock.send(f"NICK {NAME}\n".encode('utf-8'))
+sock.send(f"NICK justinfan0\n".encode('utf-8'))
 sock.send(f"JOIN {CHANNEL}\n".encode('utf-8'))
 
 lastAlert = 0
