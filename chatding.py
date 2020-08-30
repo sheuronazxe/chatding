@@ -1,5 +1,7 @@
-from config import DELAY, CHANNEL
-import socket, winsound, time, ctypes, os
+import socket, time
+from config import DELAY, CHANNEL, ALERT_SOUND, ALERT_RUMBLE
+from alerts import sound, rumble
+from common import window
 
 sock = socket.socket()
 sock.connect(('irc.chat.twitch.tv',6667))
@@ -7,12 +9,6 @@ sock.send(f"NICK justinfan0\n".encode('utf-8'))
 sock.send(f"JOIN {CHANNEL}\n".encode('utf-8'))
 
 lastAlert = 0
-
-def activeWindow():
-    hwnd = ctypes.windll.user32.GetForegroundWindow()
-    pid = ctypes.c_ulong()
-    ctypes.windll.user32.GetWindowThreadProcessId(hwnd, ctypes.byref(pid))
-    return pid.value
 
 def parseChat(resp):
     resp = resp.rstrip().split('\r\n')
@@ -31,6 +27,7 @@ while True:
     
     elif len(resp) > 0:
         parseChat(resp)
-        if os.getppid() != activeWindow() and time.time() - lastAlert > DELAY:
-            winsound.PlaySound('alert.wav', winsound.SND_FILENAME)
+        if not window.foreground() and time.time() - lastAlert > DELAY:
+            if ALERT_SOUND: sound.alert()
+            if ALERT_RUMBLE: rumble.alert()
             lastAlert = time.time()
