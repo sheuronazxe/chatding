@@ -2,7 +2,7 @@
 CHANNEL = '#sheuronazxe'
 
 # Wait x seconds to play alert again on new chat message
-DELAY = 10
+DELAY = 120
 
 ### Enable (True) / Disable (False) alert modules
 # ALERT_SOUND plays audible alarm on default sound device
